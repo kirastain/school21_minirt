@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/29 13:54:32 by bbelen            #+#    #+#             */
-/*   Updated: 2020/08/29 14:05:43 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/08/29 14:20:03 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,70 @@ int	create_sphere(char **line)
 	else
 	{
 		printf("Wrong input getting sphere %i\n", strarr_len(line));
+		exit(-1);
+	}
+}
+
+int	create_square(char **line)
+{
+	t_square	square;
+	t_int3	color;
+
+	if (strarr_len(line) == 5)
+	{
+		square.center = get_float3(line[1]);
+		square.normal = get_float3_normal(line[2]);
+		square.side = atof(line[3]);
+		color = get_int3_color(line[4]);
+		square.color = create_trgb(0, color.x, color.y, color.z);
+		return (0);
+	}
+	else
+	{
+		printf("Wrong input getting square %i\n", strarr_len(line));
+		exit(-1);
+	}
+}
+
+int	create_cylinder(char **line)
+{
+	t_cylinder	cylinder;
+	t_int3	color;
+
+	if (strarr_len(line) == 6)
+	{
+		cylinder.center = get_float3(line[1]);
+		cylinder.normal = get_float3_normal(line[2]);
+		cylinder.diameter = atof(line[3]);
+		cylinder.height = atof(line[4]);
+		color = get_int3_color(line[5]);
+		cylinder.color = create_trgb(0, color.x, color.y, color.z);
+		return (0);
+	}
+	else
+	{
+		printf("Wrong input getting cylinder %i\n", strarr_len(line));
+		exit(-1);
+	}
+}
+
+int	create_triangle(char **line)
+{
+	t_triangle	triangle;
+	t_int3	color;
+
+	if (strarr_len(line) == 5)
+	{
+		triangle.a = get_float3(line[1]);
+		triangle.b = get_float3(line[2]);
+		triangle.c = get_float3(line[3]);
+		color = get_int3_color(line[4]);
+		triangle.color = create_trgb(0, color.x, color.y, color.z);
+		return (0);
+	}
+	else
+	{
+		printf("Wrong input getting triangle %i\n", strarr_len(line));
 		exit(-1);
 	}
 }

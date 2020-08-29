@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 12:17:26 by bbelen            #+#    #+#             */
-/*   Updated: 2020/08/29 14:06:21 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/08/29 14:21:08 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,9 @@ int	create_light(char **line);
 
 int	create_plane(char **line);
 int	create_sphere(char **line);
+int	create_square(char **line);
+int	create_cylinder(char **line);
+int	create_triangle(char **line);
 
 int	strarr_len(char **line);
 t_int3	get_int3_color(char *line);
