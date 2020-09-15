@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:14:04 by bbelen            #+#    #+#             */
-/*   Updated: 2020/08/29 13:55:17 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/09/03 14:58:29 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,9 +51,10 @@ int	create_amb(char **line, t_vars *vars)
 	}
 }
 
-int	create_camera(char **line)
+int	create_camera(char **line, t_vars *vars)
 {
 	t_camera	camera;
+	t_list		*cam;
 
 	if (strarr_len(line) == 4)
 	{
@@ -61,10 +62,15 @@ int	create_camera(char **line)
 		camera.view = get_float3_normal(line[2]);
 		if ((camera.angle = ft_atoi(line[3])))
 		{
+			cam = ft_lstnew(&camera);
+			if (cam)
+			{
+				ft_lstadd_front(&(vars->cameras), ft_lstnew(&camera));
+				printf("Camera added\n");
+			}
 			return (0);
 		}
-		else
-			exit(-1);		
+		exit(-1);		
 	}
 	else
 	{
@@ -73,10 +79,11 @@ int	create_camera(char **line)
 	}
 }
 
-int	create_light(char **line)
+int	create_light(char **line, t_vars *vars)
 {
 	t_light	light;
 	t_int3	color;
+	t_list	*light_list;
 
 	if (strarr_len(line) == 4)
 	{
@@ -84,6 +91,12 @@ int	create_light(char **line)
 		light.bright = atof(line[2]);
 		color = get_int3_color(line[3]);
 		light.color = create_trgb(0, color.x, color.y, color.z);
+		light_list = ft_lstnew(&light);
+		if (light_list)
+		{
+			ft_lstadd_front(&(vars->lights), ft_lstnew(&light));
+			printf("Light added\n");
+		}
 		printf("light done\n");
 		return (0);
 	}

@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/20 15:23:51 by bbelen            #+#    #+#             */
-/*   Updated: 2020/08/29 13:46:44 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/09/03 14:54:00 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,25 @@ static int	parsing_line(char **line, t_vars *vars)
 		create_amb(line, vars);
 	else if (ft_strncmp(line[0], "c", 3) == 0)
 		//printf("cam\n");
-		create_camera(line);
+		create_camera(line, vars);
 	else if (ft_strncmp(line[0], "l", 3) == 0)
 		//printf("light\n");
-		create_light(line);
+		create_light(line, vars);
 	else if (ft_strncmp(line[0], "pl", 3) == 0)
-		printf("plane is found\n");
+		//printf("plane is found\n");
+		create_plane(line, vars);
 	else if (ft_strncmp(line[0], "sp", 3) == 0)
-		printf("sphere\n");
+		//printf("sphere\n");
+		create_sphere(line, vars);
 	else if (ft_strncmp(line[0], "sq", 3) == 0)
-		printf("square\n");
+		//printf("square\n");
+		create_square(line, vars);
 	else if (ft_strncmp(line[0], "cy", 3) == 0)
-		printf("cylinder\n");
+		//printf("cylinder\n");
+		create_cylinder(line, vars);
 	else if (ft_strncmp(line[0], "tr", 3) == 0)
-		printf("triangle\n");
+		//printf("triangle\n");
+		create_triangle(line, vars);
 	else
 		return (-1);
 	return (0);
