@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: bbelen@student.21-school.ru <bbelen>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 21:35:11 by bbelen            #+#    #+#             */
-/*   Updated: 2020/08/20 15:17:13 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/09/21 12:57:59 by bbelen@stud      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ t_list				*ft_lstlast(t_list *lst);
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void*),
 											void (*del)(void*));
 t_list				*ft_lstnew(void *content);
+t_list				*ft_lstat(t_list *lst, int pos);
 int					ft_lstsize(t_list *lst);
 void				*ft_memccpy(void *dest, void *src, int c, size_t n);
 void				*ft_memchr(const void *s, int c, size_t n);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: bbelen@student.21-school.ru <bbelen>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/20 15:23:51 by bbelen            #+#    #+#             */
-/*   Updated: 2020/09/03 14:54:00 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/09/22 19:08:46 by bbelen@stud      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,11 @@ static int	parsing_line(char **line, t_vars *vars)
 		create_amb(line, vars);
 	else if (ft_strncmp(line[0], "c", 3) == 0)
 		//printf("cam\n");
+		{
 		create_camera(line, vars);
+		t_camera *cam = vars->cameras->content;
+		printf("in validation %f %d\n", cam->pos.x, 0);
+		}
 	else if (ft_strncmp(line[0], "l", 3) == 0)
 		//printf("light\n");
 		create_light(line, vars);

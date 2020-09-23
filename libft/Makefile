@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+         #
+#    By: bbelen@student.21-school.ru <bbelen>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/05/06 16:38:20 by bbelen            #+#    #+#              #
-#    Updated: 2020/08/20 15:18:13 by bbelen           ###   ########.fr        #
+#    Updated: 2020/09/21 13:16:45 by bbelen@stud      ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ SRCS = ./ft_atoi.c ./ft_bzero.c ./ft_calloc.c\
 		./ft_strdup.c ./ft_strjoin.c ./ft_strlcat.c ./ft_strlcpy.c ./ft_strlen.c ./ft_strmapi.c\
 		./ft_strncmp.c ./ft_strnstr.c ./ft_strrchr.c ./ft_strtrim.c ./ft_substr.c ./ft_tolower.c ./ft_toupper.c
 BONUS = ./ft_lstadd_back.c ./ft_lstadd_front.c ./ft_lstclear.c ./ft_lstdelone.c ./ft_lstiter.c ./ft_lstlast.c\
-		./ft_lstnew.c ./ft_lstmap.c ./ft_lstsize.c ./get_next_line.c
+		./ft_lstnew.c ./ft_lstmap.c ./ft_lstsize.c ./get_next_line.c ./ft_lstat.c
 OBJS = $(SRCS:.c=.o)
 BOBJS = $(BONUS:.c=.o)
 HEADERS = libft.h

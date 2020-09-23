@@ -3,15 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   creating.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
+/*   By: bbelen@student.21-school.ru <bbelen>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:14:04 by bbelen            #+#    #+#             */
-/*   Updated: 2020/09/03 14:58:29 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/09/23 14:18:11 by bbelen@stud      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_minirt.h"
 #include <stdio.h>
+
+t_object *create_object(int color, int type, void *geom)
+{
+	t_object	*obj;
+	
+	obj = (t_object*)malloc(sizeof(t_object));
+	if (!obj)
+		return (NULL);
+	obj->color = color;
+	obj->type = type;
+	obj->obj = geom;
+	return (obj);
+}
 
 int	create_res(char **line, t_vars *vars)
 {
@@ -53,21 +66,19 @@ int	create_amb(char **line, t_vars *vars)
 
 int	create_camera(char **line, t_vars *vars)
 {
-	t_camera	camera;
-	t_list		*cam;
+	//t_camera	cams;
+	t_camera	*camera;
 
 	if (strarr_len(line) == 4)
 	{
-		camera.pos = get_float3(line[1]);
-		camera.view = get_float3_normal(line[2]);
-		if ((camera.angle = ft_atoi(line[3])))
+		camera = init_camera();
+		camera->pos = get_float3(line[1]);
+		camera->view = get_float3_normal(line[2]);
+		if ((camera->angle = ft_atoi(line[3])))
 		{
-			cam = ft_lstnew(&camera);
-			if (cam)
-			{
-				ft_lstadd_front(&(vars->cameras), ft_lstnew(&camera));
-				printf("Camera added\n");
-			}
+			ft_lstadd_front(&(vars->cameras), ft_lstnew(camera));
+			//cams = vars->cameras->content;
+			printf("Camera added with %f\n", camera->pos.x);
 			return (0);
 		}
 		exit(-1);		
@@ -97,7 +108,6 @@ int	create_light(char **line, t_vars *vars)
 			ft_lstadd_front(&(vars->lights), ft_lstnew(&light));
 			printf("Light added\n");
 		}
-		printf("light done\n");
 		return (0);
 	}
 	else
