@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   hooks.c                                            :+:      :+:    :+:   */
+/*   vec.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/08/20 14:31:23 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/15 19:27:57 by bbelen           ###   ########.fr       */
+/*   Created: 2020/09/24 16:32:19 by bbelen@stud       #+#    #+#             */
+/*   Updated: 2020/10/28 20:56:40 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_minirt.h"
 
-int	key_close(int keycode, t_vars *vars)
+t_double3	vec_create(double x, double y, double z)
 {
-    if (keycode == 53)
-	{
-		mlx_destroy_window(vars->mlx, vars->win);
-		exit(0);
-	}
-	else if (keycode == 0)
-		printf("here liea the next camera to the ledt\n");
-	else if (keycode == 2)
-		printf("hete lies right camera\n");
-	return (0);
+	t_double3	vec;
+
+	vec.x = x;
+	vec.y = y;
+	vec.z = z;
+	return (vec);
 }
 
-int	mouse_press(int button, int x, int y, void *param)
+double		vec_len(t_double3 vec)
 {
-	(void)param;
-	printf("`%d %d %d\n", button, x, y);
-	return (0);
+	return (sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z));
 }
 
-int	close_app(void *param)
+t_double3	lin_comb(t_double3 a, double k1, t_double3 b, double k2)
 {
-    (void)param;
-    exit(0);
+	t_double3 ret;
+
+	ret.x = k1 * a.x + k2 * b.x;
+	ret.y = k1 * a.y + k2 * b.y;
+	ret.z = k1 * a.z + k2 * b.z;
+	return (ret);
 }

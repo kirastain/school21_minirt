@@ -3,54 +3,95 @@
 /*                                                        :::      ::::::::   */
 /*   raycast.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbelen@student.21-school.ru <bbelen>       +#+  +:+       +#+        */
+/*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 13:08:09 by bbelen            #+#    #+#             */
-/*   Updated: 2020/09/23 19:12:54 by bbelen@stud      ###   ########.fr       */
+/*   Updated: 2020/10/28 21:48:19 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_minirt.h"
+#include "../includes/ft_minirt.h"
 
-t_ray	gen_ray(int w, int h, int x, int y, t_camera *cam)
+t_ray		create_ray(t_double3 o, t_double3 dir)
 {
-	t_ray	ray;
+	t_ray ray;
 
-	//printf("cam pos x in gen_ray is %f\n", cam->pos.x);
-	ray.o.x = cam->pos.x;
-	ray.o.y = cam->pos.y;
-	ray.o.z = cam->pos.z;
-	ray.dir.x = (2 * (x + 0.5f) / (float)w  - 1) * tan(cam->angle / 2.) * w/ (float)h;
-	ray.dir.y = -(2 * (y + 0.5f) / (float)h - 1) * tan(cam->angle / 2.);
-	ray.dir.z = -w / tan(cam->angle / 2.0f); //edit
-	ray.dir = vec_normalize(ray.dir);
-	return (ray); 
+	ray.o = o;
+	ray.dir = dir;
+	return (ray);
 }
 
-void	trace_ray(t_ray *ray, t_vars *vars, t_data *img, int x, int y)
+t_camera	pick_camera(t_scene *scene)
 {
+	t_list	*runner;
 	int		i;
-	int		inters;
-	t_surf	surf;
-	t_object	*object;
-	
-	i = 1; //потому что в самом начале какой-то пустой фиг
-	inters = 0;
-	surf.t = MAX_DIST;
-	while (i < ft_lstsize(vars->scene))
+
+	i = 0;
+	runner = scene->cameras;
+	while (i < scene->selected_camera && runner != NULL)
 	{
-		//printf("here we go %f\n", ray->o.x);
-		//init_object(object);
-		object = ft_lstat(vars->scene, i)->content;
-		inters = intersects(object, &surf, ray);
 		i++;
+		runner = runner->next;
 	}
-	if (surf.t < MAX_DIST && inters)
+	return (*(t_camera *)runner->content);
+}
+
+t_double3		get_direction(int x, int y, t_scene *scene, t_camera camera)
+{
+	double fov_coeff;
+	double aspect_ratio;
+	double p_x;
+	double p_y;
+
+	fov_coeff = tan((double)camera.fov / 2 * M_PI / 180);
+	aspect_ratio = (double)scene->width / (double)scene->height;
+	p_x = (2 * (x + 0.5) / (double)scene->width - 1) * aspect_ratio * fov_coeff;
+	//printf("p_x is %f x is %d\n", p_x, x);
+	p_x = p_x * -1.0;
+	//printf("p_x is %f x is %d\n", p_x, x);
+	p_y = (1 - 2 * (y + 0.5) / (double)scene->height) * fov_coeff;
+	return (vec_create(p_x, p_y, 1));
+}
+
+t_ray	gen_ray(int x, int y, t_scene *scene)
+{
+	t_double3		origin;
+	t_double3		direction;
+	t_matrix	c2w;
+	t_camera	camera;
+	t_ray		ray;
+
+	camera = pick_camera(scene);
+
+	c2w = look_at(camera.pos, camera.dir);
+	origin = multiply_by_matrix(vec_create(0, 0, 0), c2w);
+	direction = get_direction(x, y, scene, camera);
+	direction = multiply_by_matrix(direction, c2w);
+	//printf("dir is %f %f %f\n", direction.z, direction.y, direction.z);
+	direction = vec_sub(direction, origin);
+	printf("dir is %f %f %f\n", direction.z, direction.y, direction.z);
+	direction = vec_normalize(direction);
+	ray = create_ray(origin, direction);
+	return (ray);
+}
+
+int	trace_ray(t_scene *scene, t_ray ray)
+{
+	double		t_min;
+	t_object	*object;
+	t_colrgb	color;
+	t_colrgb	ambient_color;
+
+	if (intersect_main(scene->objects, ray, &object, &t_min))
 	{
-		//printf("yes\n");
-		my_mlx_pixel_put(img, x, y, 0xcc99ffe6);
+		ambient_color = colrgb_amb(scene->ambient_color,
+									scene->ambient);
+		//color = colrgb_add(colrgb_mult(object->color, ambient_color),
+		//					shade(scene, ray, object, t_min));
+		color = object->color;
+		return (to_int(color));
 	}
 	else
-		my_mlx_pixel_put(img, x, y, 0xcc69C2FA);
-	//object = ft_lstat(vars->scene, 0)->content;
+		return (0);
+		//0xcc99ffe6
 }

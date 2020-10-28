@@ -3,21 +3,23 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bbelen@student.21-school.ru <bbelen>       +#+  +:+       +#+         #
+#    By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/08/13 12:42:33 by bbelen            #+#    #+#              #
-#    Updated: 2020/09/22 19:12:47 by bbelen@stud      ###   ########.fr        #
+#    Updated: 2020/10/15 18:37:21 by bbelen           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minirt
 CC = gcc
 MAKE = make
-HEADER = ft_minirt.h
+HEADER := /includes
 
-SRC = ./srcs/color.c ./srcs/color_add.c ./srcs/hooks.c ./main.c \
-		./srcs/validation.c ./srcs/creating.c ./srcs/creating_geom.c ./srcs/raycast.c ./srcs/add_math.c \
-		./srcs/intersect.c ./srcs/inits.c
+SRC =  ./srcs/bmp.c ./srcs/color_diffuse.c ./srcs/color.c ./srcs/color2.c ./srcs/creating_geom.c \
+		./srcs/creating.c ./srcs/equation.c ./srcs/errors.c ./srcs/geometry.c ./srcs/hooks.c ./srcs/image.c \
+		./srcs/inits.c ./srcs/intersect.c ./srcs/lighting.c ./srcs/main.c \
+		./srcs/raycast.c ./srcs/validation.c \
+		./srcs/vec.c ./srcs/vec2.c ./srcs/vec3_normals.c \
 
 OBJS = $(SRC:.c=.o)
 FLAGS = -Wall -Wextra -Werror

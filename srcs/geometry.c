@@ -6,66 +6,22 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/20 14:50:55 by bbelen            #+#    #+#             */
-/*   Updated: 2020/08/20 15:22:24 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/28 14:42:55 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-typedef struct	s_float3
-{
-	float	x;
-	float	y;
-	float	z;
-}				t_float3;
+#include "../includes/ft_minirt.h"
 
-typedef struct	s_camera
+t_double3		get_normal(t_double3 p, t_object *object)
 {
-	t_float3	pos;
-	t_float3	view; //[-1,1]
-	int			angle; //[0, 180]
-}				t_camera;
-
-typedef struct	s_light
-{
-	t_float3	pos;
-	float		bright; //[0, 1]
-	t_float3	color;
-}				t_light;
-
-typedef struct	s_sphere
-{
-	t_float3	radius;
-	float		center;
-	t_float3	color;
-}				t_sphere;
-
-typedef struct	s_plane
-{
-	t_float3	center;
-	t_float3	normal; //[-1,1]
-	t_float3	color;
-}				t_plane;
-
-typedef struct	s_square
-{
-	t_float3	center;
-	t_float3	normal;
-	float		side;
-	t_float3	color;
-}				t_square;
-
-typedef struct	s_cylinder
-{
-	t_float3	center;
-	t_float3	normal;
-	float		diameter;
-	float		height;
-	t_float3	color;
-}				t_cylinder;
-
-typedef struct s_triangle
-{
-	t_float3	a;
-	t_float3	b;
-	t_float3	c;
-	t_float3	color;
-}				t_triangle;
+	if (object->type == T_CYLINDER)
+		return (cylinder_normal(p, *(t_cylinder*)object->obj));
+	if (object->type == T_SPHERE)
+		return (sphere_normal(p, *(t_sphere*)object->obj));
+	if (object->type == T_SQUARE)
+		return (square_normal(*(t_square*)object->obj));
+	if (object->type == T_TRIANGLE)
+		return (triangle_normal(*(t_triangle*)object->obj));
+	else
+		return (plane_normal(*(t_plane*)object->obj));
+}

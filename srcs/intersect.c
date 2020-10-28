@@ -3,140 +3,214 @@
 /*                                                        :::      ::::::::   */
 /*   intersect.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbelen@student.21-school.ru <bbelen>       +#+  +:+       +#+        */
+/*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 15:55:20 by bbelen            #+#    #+#             */
-/*   Updated: 2020/09/23 19:01:39 by bbelen@stud      ###   ########.fr       */
+/*   Updated: 2020/10/28 20:35:17 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_minirt.h"
+#include "../includes/ft_minirt.h"
 
-int	intersects_plane(t_object *obj, t_surf *surf, t_ray *ray)
+int	intersects_plane(t_object *obj, double *t, t_ray ray)
 {
-	float	t;
+	double	t0;
 	t_plane	*pl;
 	
 	pl = obj->obj;
-	//printf("ray o is%f %f %f\n", ray->o.x, ray->o.y, ray->o.z);
-	//printf("ray dir is %f %f %f\n", ray->dir.x, ray->dir.y, ray->dir.z);
-	//printf("surf t is %f\n", surf->t);
-	//printf("dot 1 is %f\n", dot(float3_substr(pl->center, ray->o), pl->normal));
-	//printf("dot 2 is %f\n", dot(ray->dir, pl->normal));
-	t = dot(float3_substr(pl->center, ray->o), pl->normal) / dot(ray->dir, pl->normal);
-	//printf("plane t is %f\n", t);
-	if (t > MIN_DIST && t < surf->t)
+	t0 = dot(vec_sub(pl->center, ray.o), pl->normal) / dot(ray.dir, pl->normal);
+	if (t0 > MIN_DIST)
 	{
-		//printf("plane t is %f\n", t);
-		surf->t = t;
-		surf->notmal = pl->normal;
-		surf->hit = 1;
+		*t = t0;
 		return (1);
 	}
-	//surf.t = dot((point - ray.o), normal) / dot(ray.d, normal);
 	return (0);
 }
 
-int	intersects_sphere(t_object *obj, t_surf *surf, t_ray ray)
+int	intersects_sphere(t_object *obj, double *t, t_ray ray)
 {
-	float		t;
+	double		t0;
 	t_sphere	*sp;
-	t_float3	k;
-	t_float3	inv_dir;
-	float		d;
+	t_double3	k;
+	t_double3	inv_dir;
+	double		t1;
 
 	sp = obj->obj;
-	inv_dir = float3_substr(ray.o, sp->center);
+	inv_dir = vec_sub(ray.o, sp->center);
 	//printf("sphere is %f %f %f rad %f\n", sp->center.x, sp->center.y, sp->center.z, sp->radius);
-	//printf("ray dir is %f %f %f\n", ray->dir.x, ray->dir.y, ray->dir.z);
+	//printf("ray o is %f %f %f\n", ray.o.x, ray.o.y, ray.o.z);
+	//printf("ray dir is %f %f %f\n", ray.dir.x, ray.dir.y, ray.dir.z);
 	k.x = dot(ray.dir, ray.dir);
-	k.y = dot(mult_float(2, inv_dir), ray.dir);
-	k.z = dot(inv_dir, inv_dir) - sp->radius * sp->radius;
-	d = k.y * k.y - 4 * k.x * k.z;
-	//printf("k is %f %f %f\n", k.x, k.y, k.z);
-	//printf("d is %f\n", d);
-	if (d < 0)
-	{
-		//printf("d < 0\n");
+	k.y = 2.0 * dot(ray.dir, inv_dir);
+	k.z = dot(inv_dir, inv_dir) - (sp->radius * sp->radius);
+	
+	if (solve_quadratic(new_qparams(k.x, k.y, k.z), &t0, &t1) == 0)
 		return (0);
-	}
-	t = (-k.y - sqrt(d)) / 2 * k.x;
-	//printf("sphere t is %f\n", t);
-	if (t > MIN_DIST && t < surf->t)
+	*t = (t0 < t1 ? t0 : t1);
+	//surf->hitPoint = vec_add(ray.o, mult_float(surf->t, ray.dir));
+	//surf->normal = vec_normalize(vec_sub(surf->hitPoint, sp->center));
+	//surf->hit = 1;
+	return (1);
+}
+
+int	intersects_square(t_ray ray, t_square *sq, double *t)
+{
+	double	denom;
+	t_double3	hit_point;
+	t_double3	p0l0;
+
+	denom = dot(sq->normal, ray.dir);
+	if (fabs(denom) > MIN_DIST)
 	{
-		//printf("sphere t is %f\n", t);
-		surf->t = t;
-		surf->hitPoint = vec_add(ray.o, mult_float(surf->t, ray.dir));
-		surf->notmal = vec_normalize(float3_substr(surf->hitPoint, sp->center));
-		surf->hit = 1;
-		return (1);
+		p0l0 = vec_sub(sq->center, ray.o);
+		*t = dot(p0l0, sq->normal) / denom;
+		hit_point = vec_add(ray.o, mult_float(*t, ray.dir));
+		if (*t >= 0)
+		{
+			if (fabs(hit_point.x - sq->center.x) > (sq->side / 2))
+				return (0);
+			if (fabs(hit_point.y - sq->center.y) > (sq->side / 2))
+				return (0);
+			if (fabs(hit_point.z - sq->center.z) > (sq->side / 2))
+				return (0);
+			else
+			{
+				//surf->hitPoint = hit_point;
+				return (1);
+			}
+		}
+		else
+			return (0);
 	}
-	t = (-k.y + sqrt(d)) / 2 * k.x;
-	if (t > MIN_DIST && t < surf->t)
+	return (0);
+}
+
+int	intersects_cylinder(t_ray ray, t_cylinder *cylinder, double *t)
+{
+	double t0;
+	double t1;
+
+	//printf("gpt cylinder %f %f %F\n", cylinder->center.x, cylinder->center.y, cylinder->center.z);
+	if (!cyl_get_roots(&t0, &t1, *cylinder, ray))
+		return (0);
+	if (t0 > 0)
+		check_t(&t0, *cylinder, ray);
+	if (t1 > 0)
+		check_t(&t1, *cylinder, ray);
+	if (t0 < 0 && t1 < 0)
+		return (0);
+	if (t1 < t0)
+		*t = (t1 > 0 ? t1 : t0);
+	else
+		*t = (t0 > 0 ? t0 : t1);
+	//printf("gpt cylinder %f %f %F\n", cylinder->center.x, cylinder->center.y, cylinder->center.z);
+	return (1);
+}
+
+int	intersects_triangle(t_triangle *tr, double *t, t_ray ray)
+{
+	t_double3	a;
+	t_double3	b;
+	t_double3	n;
+	double	angle;
+	t_double3	p;
+
+	a = vec_sub(tr->b, tr->a);
+	b = vec_sub(tr->c, tr->a);
+	n = vec_cross(a, b);
+	n = vec_normalize(n);
+	angle = dot(n, ray.dir);
+	if (fabs(angle) < MIN_DIST)
+		return (0);
+	*t = (dot(n, vec_sub(tr->a, ray.o)) / angle);
+	if (*t < 0)
+		return (0);
+	p = vec_add(ray.o, mult_float(*t, ray.dir));
+	return (check_edges(*tr, p, n));
+}
+
+int		intersect_main_shadow(t_list *objects, t_ray ray, t_object **object, double *t_min, t_object *work_object)
+{
+	t_list		*current;
+	t_object	*this_object;
+	double		t;
+
+	*object = NULL;
+	current = objects;
+	*t_min = MAX_DIST;
+	while (current != NULL)
 	{
-		printf("sphere t is %f\n", t);
-		surf->t = t;
-		surf->hitPoint = vec_add(ray.o, mult_float(surf->t, ray.dir));
-		surf->notmal = vec_normalize(float3_substr(surf->hitPoint, sp->center));
-		surf->hit = 1;
-		return (1);
+		this_object = current->content;
+		if (intersects(this_object, &t, ray) && (this_object != work_object))
+		{
+			if (t < *t_min)
+			{
+				*object = this_object;
+				*t_min = t;
+			}
+		}
+		current = current->next;
 	}
-	return (0);
+	if (*object != NULL)
+		return (1);
+	else
+		return (0);
 }
 
-int	intersects_square()
+int		intersect_main(t_list *objects, t_ray ray, t_object **object, double *t_min)
 {
-	return (0);
+	t_list		*current;
+	t_object	*this_object;
+	double		t;
+
+	*object = NULL;
+	current = objects;
+	*t_min = MAX_DIST;
+	while (current != NULL)
+	{
+		this_object = current->content;
+		if (intersects(this_object, &t, ray))
+		{
+			if (t < *t_min)
+			{
+				*object = this_object;
+				*t_min = t;
+			}
+		}
+		current = current->next;
+	}
+	if (*object != NULL)
+		return (1);
+	else
+		return (0);
 }
 
-int	intersects_cylinder()
-{
-	return (0);
-}
-
-int	intersects_triangle()//t_object *obj, t_surf *surf, t_ray ray)
-{
-	/*t_triangle	*tr;
-	t_float3	T;
-    t_float3	E1;
-    t_float3	E2;
-	t_float3	tuv; = (1 / dot(cross(ray.d, E2), E1)) * float3((dot(cross(T, E1), E2)), dot(cross(ray.d, E2), T), dot(cross(T, E1), ray.d));
-    
-	tr = obj->obj;
-	T = float3_substr(ray.o, tr->a);
-	E1 = float3_substr(tr->b, tr->a);
-	E2 = float3_substr(tr->c, tr->a);
-    if (tuv.y < 0 || tuv.z < 0 || (tuv.y + tuv.z) > 1)
-        return (0);
-
-    if (tuv.x > MIN_DIST && tuv.x < surf->t)
-    {
-        surf->hit = 1;
-        surf->hitPoint = ray.o + surf.t * ray.d;
-        surf->notmal = vec_cross(float3_substr(tr->b. tr->a), float3_substr(tr->c, tr->a));
-        return (1);
-    }*/
-    return (0);
-}
-
-int	intersects(t_object *obj, t_surf *surf, t_ray *ray)
+int	intersects(t_object *obj, double *t, t_ray ray)
 {
 	if (obj->type == T_PLANE)
 	{
 		//printf("goes into the plane\n");
-		return (intersects_plane(obj, surf, ray));
+		//return (0);
+		return (intersects_plane(obj, t, ray));
 	}
 	else if (obj->type == T_SPHERE)
 	{
 		//printf("into the sphere\n");
-		return (intersects_sphere(obj, surf, *ray));
+		//return (0);
+		return (intersects_sphere(obj, t, ray));
 	}
 	else if (obj->type == T_SQUARE)
-		intersects_square();
+		//return (0);
+		return (intersects_square(ray, (t_square*)obj->obj, t));
 	else if (obj->type == T_CYLINDER)
-		intersects_cylinder();
+	{
+		//printf("gpt cylinder inter main %f\n", ((t_cylinder*)obj->obj)->center.x);
+		return (intersects_cylinder(ray, (t_cylinder*)obj->obj, t));
+	}
 	else
-		intersects_triangle();
+	{
+		return (intersects_triangle((t_triangle*)obj->obj, t, ray));
+	}
 	return (0);
 }
 

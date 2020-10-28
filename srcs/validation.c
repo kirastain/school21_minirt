@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   validation.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbelen@student.21-school.ru <bbelen>       +#+  +:+       +#+        */
+/*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/20 15:23:51 by bbelen            #+#    #+#             */
-/*   Updated: 2020/09/22 19:08:46 by bbelen@stud      ###   ########.fr       */
+/*   Updated: 2020/10/28 21:33:31 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../ft_minirt.h"
+#include "../includes/ft_minirt.h"
 #include <stdio.h>
 
 int	strarr_len(char **line)
@@ -23,9 +23,9 @@ int	strarr_len(char **line)
 	return (i);
 }
 
-t_float3	get_float3(char *line)
+t_double3	get_double3(char *line)
 {
-	t_float3	pos;
+	t_double3	pos;
 
 	pos.x = atof(line);
 	while (*line != ',')
@@ -35,27 +35,19 @@ t_float3	get_float3(char *line)
 		line++;
 	pos.z = atof(++line);
 	return (pos);
-	/*else
-	{
-		printf("Wrong pos float3 input\n");
-		exit(-1);
-	}*/	
 }
 
-t_float3	get_float3_normal(char *line)
+t_double3	get_double3_normal(char *line)
 {
-	t_float3	norm;
+	t_double3	norm;
 
-	norm = get_float3(line);
+	norm = get_double3(line);
 	if ((norm.x >= -1.0f && norm.x <= 1.0f) || (norm.y >= -1.0f && norm.y <= 1.0f) ||
 	(norm.z >= -1.0f && norm.z >= 1.0f))
 		return (norm);
 	else
-	{
-		printf("Wrong input view or norm vec\n");
-		exit(-1);
-	}
-	
+		error_quit("Wrong input view of norm vector\n");
+	return (norm);	
 }
 
 t_int3	get_int3_color(char *line)
@@ -73,46 +65,32 @@ t_int3	get_int3_color(char *line)
 	|| (color.z >= 0 && color.z <= 255))
 		return (color);
 	else
-	{
-		printf("Wrong colors input\n");
-		exit(-1);
-	}
-	
+		error_quit("Wrong colors input\n");
+	return (color);
 }
 
 static int	parsing_line(char **line, t_vars *vars)
 {
 	if (ft_strncmp(line[0], "R", 2) == 0 && !(vars->res_x))
 		create_res(line, vars);
-	else if (ft_strncmp(line[0], "A", 3) == 0 && !(vars->ambience))
+	else if (ft_strncmp(line[0], "A", 3) == 0 && !(vars->scene->ambient))
 		create_amb(line, vars);
 	else if (ft_strncmp(line[0], "c", 3) == 0)
-		//printf("cam\n");
-		{
 		create_camera(line, vars);
-		t_camera *cam = vars->cameras->content;
-		printf("in validation %f %d\n", cam->pos.x, 0);
-		}
 	else if (ft_strncmp(line[0], "l", 3) == 0)
-		//printf("light\n");
 		create_light(line, vars);
 	else if (ft_strncmp(line[0], "pl", 3) == 0)
-		//printf("plane is found\n");
 		create_plane(line, vars);
 	else if (ft_strncmp(line[0], "sp", 3) == 0)
-		//printf("sphere\n");
 		create_sphere(line, vars);
 	else if (ft_strncmp(line[0], "sq", 3) == 0)
-		//printf("square\n");
 		create_square(line, vars);
 	else if (ft_strncmp(line[0], "cy", 3) == 0)
-		//printf("cylinder\n");
 		create_cylinder(line, vars);
 	else if (ft_strncmp(line[0], "tr", 3) == 0)
-		//printf("triangle\n");
 		create_triangle(line, vars);
 	else
-		return (-1);
+		error_quit("Wrong input parsing\n");
 	return (0);
 }
 
@@ -127,20 +105,14 @@ int	checking_flags(int fd, t_vars *vars)
 		if (data[0])
 		{
 			if (parsing_line(data, vars) == -1)
-			{
-				printf("Wrong input parsing\n");
-				return (-1);
-			}
+				error_quit("Wrong input parsing\n");
 		}
 	}
 	data = ft_split(line, ' ');
 	if (data[0])
 	{
 		if (parsing_line(data, vars) == -1)
-		{
-			printf("Wrong input parsing\n");
-			return (-1);
-		}
+			error_quit("Wrong input parsing\n");
 	}
 	return (0);
 }
