@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   color_add.c                                        :+:      :+:    :+:   */
+/*   color2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 12:35:09 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/15 16:54:32 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/29 22:48:24 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_minirt.h" 
+#include "../includes/ft_minirt.h"
 #include <stdio.h>
 
 int	add_shade(double distance, int trgb)

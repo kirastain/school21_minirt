@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/29 13:54:32 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/28 21:28:12 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/29 22:48:49 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,13 @@ void	create_plane(char **line, t_vars *vars)
 		ft_lstadd_back(&(vars->scene->objects), ft_lstnew(obj));
 	}
 	else
-		error_quit("Wrong input creating plane\n");
+		error_quit("Error\nWrong input creating plane\n");
 }
 
 void	create_sphere(char **line, t_vars *vars)
 {
 	t_sphere	*sphere;
-	t_int3	color;
+	t_int3		color;
 	t_object	*obj;
 
 	if (strarr_len(line) == 4)
@@ -48,14 +48,14 @@ void	create_sphere(char **line, t_vars *vars)
 		ft_lstadd_back(&(vars->scene->objects), ft_lstnew(obj));
 	}
 	else
-		error_quit("Wrong input creating sphere\n");
+		error_quit("Error\nWrong input creating sphere\n");
 
 }
 
 void	create_square(char **line, t_vars *vars)
 {
 	t_square	*square;
-	t_int3	color;
+	t_int3		color;
 	t_object	*obj;
 
 	if (strarr_len(line) == 5)
@@ -69,13 +69,13 @@ void	create_square(char **line, t_vars *vars)
 		ft_lstadd_back(&(vars->scene->objects), ft_lstnew(obj));
 	}
 	else
-		error_quit("Wrong input creating square\n");
+		error_quit("Error\nWrong input creating square\n");
 }
 
 void	create_cylinder(char **line, t_vars *vars)
 {
 	t_cylinder	*cylinder;
-	t_int3	color;
+	t_int3		color;
 	t_object	*obj;
 
 	if (strarr_len(line) == 6)
@@ -90,13 +90,13 @@ void	create_cylinder(char **line, t_vars *vars)
 		ft_lstadd_back(&(vars->scene->objects), ft_lstnew(obj));
 	}
 	else
-		error_quit("Wrong input creating cylinder\n");
+		error_quit("Error\nWrong input creating cylinder\n");
 }
 
 void	create_triangle(char **line, t_vars *vars)
 {
 	t_triangle	*triangle;
-	t_int3	color;
+	t_int3		color;
 	t_object	*obj;
 
 	if (strarr_len(line) == 5)
@@ -110,5 +110,5 @@ void	create_triangle(char **line, t_vars *vars)
 		ft_lstadd_back(&(vars->scene->objects), ft_lstnew(obj));
 	}
 	else
-		error_quit("Wrong input creating triangle\n");
+		error_quit("Error\nWrong input creating triangle\n");
 }

@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 13:08:09 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/28 21:48:19 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/29 15:59:11 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,15 @@ t_double3		get_direction(int x, int y, t_scene *scene, t_camera camera)
 	double aspect_ratio;
 	double p_x;
 	double p_y;
+	t_double3	res;
 
 	fov_coeff = tan((double)camera.fov / 2 * M_PI / 180);
 	aspect_ratio = (double)scene->width / (double)scene->height;
 	p_x = (2 * (x + 0.5) / (double)scene->width - 1) * aspect_ratio * fov_coeff;
-	//printf("p_x is %f x is %d\n", p_x, x);
 	p_x = p_x * -1.0;
-	//printf("p_x is %f x is %d\n", p_x, x);
 	p_y = (1 - 2 * (y + 0.5) / (double)scene->height) * fov_coeff;
-	return (vec_create(p_x, p_y, 1));
+	res = vec_create(p_x, p_y, 1);
+	return (res);
 }
 
 t_ray	gen_ray(int x, int y, t_scene *scene)
@@ -62,14 +62,12 @@ t_ray	gen_ray(int x, int y, t_scene *scene)
 	t_ray		ray;
 
 	camera = pick_camera(scene);
-
 	c2w = look_at(camera.pos, camera.dir);
 	origin = multiply_by_matrix(vec_create(0, 0, 0), c2w);
+	direction.x = 0.0;
 	direction = get_direction(x, y, scene, camera);
 	direction = multiply_by_matrix(direction, c2w);
-	//printf("dir is %f %f %f\n", direction.z, direction.y, direction.z);
 	direction = vec_sub(direction, origin);
-	printf("dir is %f %f %f\n", direction.z, direction.y, direction.z);
 	direction = vec_normalize(direction);
 	ray = create_ray(origin, direction);
 	return (ray);
@@ -86,12 +84,13 @@ int	trace_ray(t_scene *scene, t_ray ray)
 	{
 		ambient_color = colrgb_amb(scene->ambient_color,
 									scene->ambient);
-		//color = colrgb_add(colrgb_mult(object->color, ambient_color),
-		//					shade(scene, ray, object, t_min));
-		color = object->color;
+		color = colrgb_add(colrgb_mult(object->color, ambient_color),
+							shade(scene, ray, object, t_min));
 		return (to_int(color));
 	}
 	else
+	{
 		return (0);
+	}
 		//0xcc99ffe6
 }

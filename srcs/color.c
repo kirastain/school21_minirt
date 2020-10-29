@@ -6,36 +6,11 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 12:16:17 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/15 18:07:40 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/29 22:48:03 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_minirt.h" 
-
-int	create_trgb(int t, int r, int g, int b)
-{
-	return(t << 24 | r << 16 | g << 8 | b);
-}
-
-int	get_t(int trgb)
-{
-	return (trgb & (0xFF << 24));
-}
-
-int	get_r(int trgb)
-{
-	return (trgb & (0xFF << 16));
-}
-
-int	get_g(int trgb)
-{
-	return (trgb & (0xFF << 8));
-}
-
-int	get_b(int trgb)
-{
-	return (trgb & 0xFF);
-}
+#include "../includes/ft_minirt.h"
 
 t_colrgb	get_colrgb(int red, int green, int blue)
 {
@@ -50,7 +25,7 @@ t_colrgb	get_colrgb(int red, int green, int blue)
 t_colrgb	int_to_color(int color)
 {
 	t_int_color	a;
-	t_colrgb		result;
+	t_colrgb	result;
 
 	a.integer = color;
 	result.red = a.comps[2];
@@ -59,7 +34,7 @@ t_colrgb	int_to_color(int color)
 	return (result);
 }
 
-int		color_to_int(t_int3 color)
+int			color_to_int(t_int3 color)
 {
 	t_int_color a;
 
@@ -72,7 +47,7 @@ int		color_to_int(t_int3 color)
 int			to_int(t_colrgb a)
 {
 	int		result;
-	t_int3 this;
+	t_int3	this;
 
 	this.x = a.red * 256;
 	this.y = a.green * 256;

@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/20 15:23:51 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/28 21:33:31 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/29 17:11:14 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_double3	get_double3_normal(char *line)
 	(norm.z >= -1.0f && norm.z >= 1.0f))
 		return (norm);
 	else
-		error_quit("Wrong input view of norm vector\n");
+		error_quit("Error\nWrong input view of norm vector\n");
 	return (norm);	
 }
 
@@ -65,13 +65,13 @@ t_int3	get_int3_color(char *line)
 	|| (color.z >= 0 && color.z <= 255))
 		return (color);
 	else
-		error_quit("Wrong colors input\n");
+		error_quit("Error\nWrong colors input\n");
 	return (color);
 }
 
 static int	parsing_line(char **line, t_vars *vars)
 {
-	if (ft_strncmp(line[0], "R", 2) == 0 && !(vars->res_x))
+	if (ft_strncmp(line[0], "R", 2) == 0 && !(vars->scene->width))
 		create_res(line, vars);
 	else if (ft_strncmp(line[0], "A", 3) == 0 && !(vars->scene->ambient))
 		create_amb(line, vars);
@@ -90,7 +90,7 @@ static int	parsing_line(char **line, t_vars *vars)
 	else if (ft_strncmp(line[0], "tr", 3) == 0)
 		create_triangle(line, vars);
 	else
-		error_quit("Wrong input parsing\n");
+		error_quit("Error\nWrong input parsing\n");
 	return (0);
 }
 
@@ -105,14 +105,14 @@ int	checking_flags(int fd, t_vars *vars)
 		if (data[0])
 		{
 			if (parsing_line(data, vars) == -1)
-				error_quit("Wrong input parsing\n");
+				error_quit("Error\nWrong input parsing\n");
 		}
 	}
 	data = ft_split(line, ' ');
 	if (data[0])
 	{
 		if (parsing_line(data, vars) == -1)
-			error_quit("Wrong input parsing\n");
+			error_quit("Error\nWrong input parsing\n");
 	}
 	return (0);
 }

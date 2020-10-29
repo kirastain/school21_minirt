@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 19:28:47 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/28 19:48:09 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/29 17:13:57 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ t_double3		cylinder_normal(t_double3 point, t_cylinder cylinder)
 	t_double3 ctp;
 	t_double3 norm;
 
-	//printf("cylinder in norm %f %f %f\n", cylinder.center.x, cylinder.center.y, cylinder.center.z);
 	ctp = vec_sub(point, cylinder.center);
 	norm = vec_sub(ctp, mult_float(dot(cylinder.normal, ctp), cylinder.normal));
 	norm = vec_normalize(norm);

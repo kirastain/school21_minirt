@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/23 16:14:04 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/28 21:27:41 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/29 18:33:10 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,9 @@ t_object *create_object(t_colrgb color, int type, void *geom)
 	
 	obj = (t_object*)malloc(sizeof(t_object));
 	if (!obj)
-		error_quit("Not enough memory\n");
+		error_quit("Error\nNot enough memory\n");
 	obj->color = color;
+	//printf("color is %d %d %d\n", color.red, color.green, color.blue);
 	obj->type = type;
 	obj->obj = geom;
 	obj->albedo = 0.1;
@@ -31,14 +32,15 @@ void	create_res(char **line, t_vars *vars)
 {
 	if (strarr_len(line) == 3)
 	{
-		vars->res_x = ft_atoi(line[1]);
-		vars->res_y = ft_atoi(line[2]);
 		vars->scene->height = ft_atoi(line[2]);
 		vars->scene->width = ft_atoi(line[1]);
-		//добавить про разрешение экрана!!!!!!!!!!!
+		if (vars->scene->width > WIDTH)
+			vars->scene->width = WIDTH;
+		if (vars->scene->height > HEIGHT)
+			vars->scene->height = HEIGHT;
 	}
 	else
-		error_quit("Wrong input getting res\n");
+		error_quit("Error\nWrong input getting res\n");
 }
 
 void	create_amb(char **line, t_vars *vars)
@@ -52,7 +54,7 @@ void	create_amb(char **line, t_vars *vars)
 		vars->scene->ambient_color = get_colrgb(color.x, color.y, color.z);
 	}
 	else
-		error_quit("Wrong input creating amb\n");
+		error_quit("Error\nWrong input creating amb\n");
 }
 
 void	create_camera(char **line, t_vars *vars)
@@ -68,7 +70,7 @@ void	create_camera(char **line, t_vars *vars)
 		ft_lstadd_back(&(vars->scene->cameras), ft_lstnew(camera));
 	}
 	else
-		error_quit("Wrong input creating camera\n");
+		error_quit("Error\nWrong input creating camera\n");
 }
 
 void	create_light(char **line, t_vars *vars)
@@ -86,5 +88,5 @@ void	create_light(char **line, t_vars *vars)
 		ft_lstadd_back(&(vars->scene->lights), ft_lstnew(light));
 	}
 	else
-		error_quit("Wrong input creating light\n");
+		error_quit("Error\nWrong input creating light\n");
 }

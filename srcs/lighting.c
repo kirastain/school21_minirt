@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 19:07:40 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/16 19:13:52 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/29 22:41:03 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,14 @@ double		spec_coeff(t_light light, t_surf surf)
 	t_double3		light_ray;
 	t_double3		reflectance_vector;
 	t_double3		back_view_ray;
-	double		result;
+	double			result;
 
-	light_ray = vec_sub(light.pos, surf.hitPoint);
+	light_ray = vec_sub(light.pos, surf.hit_point);
 	light_ray = vec_normalize(light_ray);
 	reflectance_vector = vec_add(light_ray,
-								mult_float(-2, mult_float(dot(light_ray, surf.normal), surf.normal)));
-	back_view_ray = vec_sub(surf.hitPoint, surf.ray.o);
+		mult_float(-2, mult_float(dot(light_ray,
+						surf.normal), surf.normal)));
+	back_view_ray = vec_sub(surf.hit_point, surf.ray.o);
 	back_view_ray = vec_normalize(back_view_ray);
 	result = fmax(dot(reflectance_vector, back_view_ray), 0);
 	result = pow(result, 10);

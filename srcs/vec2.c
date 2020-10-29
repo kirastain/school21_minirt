@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 13:35:47 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/15 18:44:00 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/29 21:54:37 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,16 @@ t_double3	vec_cross(t_double3 u, t_double3 v)
 	res.x = u.y * v.z - u.z * v.y;
 	res.y = u.z * v.x - u.x * v.z;
 	res.z = u.x * v.y - u.y * v.x;
+	return (res);
+}
+
+t_double3		mult_rot_matrix(t_double3 p, t_rot_matrix m)
+{
+	t_double3 res;
+
+	res.x = p.x * m.d[0][0] + p.y * m.d[1][0] + p.z * m.d[2][0];
+	res.y = p.x * m.d[0][1] + p.y * m.d[1][1] + p.z * m.d[2][1];
+	res.z = p.x * m.d[0][2] + p.y * m.d[1][2] + p.z * m.d[2][2];
 	return (res);
 }
 
