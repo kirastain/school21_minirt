@@ -6,30 +6,11 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/16 19:36:47 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/27 17:23:26 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 17:49:15 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_minirt.h"
-
-void		swap_doubles(double *a, double *b)
-{
-	double buffer;
-
-	buffer = *a;
-	*a = *b;
-	*b = buffer;
-}
-
-t_qparams	new_qparams(double a, double b, double c)
-{
-	t_qparams params;
-
-	params.a = a;
-	params.b = b;
-	params.c = c;
-	return (params);
-}
 
 int			solve_quadratic(t_qparams params, double *x0, double *x1)
 {
@@ -71,22 +52,22 @@ void		check_t(double *t, t_cylinder cylinder, t_ray ray)
 		*t = -1;
 }
 
-int			cyl_get_roots(double *t0, double *t1, t_cylinder cylinder, t_ray ray)
+int			cyl_get_roots(double *t0, double *t1, t_cylinder cy, t_ray ray)
 {
 	t_double3	a_sqrt;
 	t_double3	right;
-	double	a;
-	double	b;
-	double	c;
+	double		a;
+	double		b;
+	double		c;
 
 	a_sqrt = vec_sub(ray.dir,
-								mult_float(dot(ray.dir, cylinder.normal), cylinder.normal));
+			mult_float(dot(ray.dir, cy.normal), cy.normal));
 	a = dot(a_sqrt, a_sqrt);
-	right = vec_sub(vec_sub(ray.o, cylinder.center),
-						mult_float(dot(vec_sub(ray.o, cylinder.center),
-							cylinder.normal), cylinder.normal));
+	right = vec_sub(vec_sub(ray.o, cy.center),
+			mult_float(dot(vec_sub(ray.o, cy.center),
+			cy.normal), cy.normal));
 	b = 2 * dot(a_sqrt, right);
-	c = dot(right, right) - ((cylinder.diameter / 2) * (cylinder.diameter / 2));
+	c = dot(right, right) - ((cy.diameter / 2) * (cy.diameter / 2));
 	if (!solve_quadratic(new_qparams(a, b, c), t0, t1))
 		return (0);
 	return (1);

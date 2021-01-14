@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 19:28:47 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/29 17:13:57 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 18:08:50 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_double3		sphere_normal(t_double3 point, t_sphere sphere)
 	return (norm);
 }
 
-t_double3	plane_normal(t_plane plane)
+t_double3		plane_normal(t_plane plane)
 {
 	t_double3 norm;
 

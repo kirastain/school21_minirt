@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/09/12 13:08:09 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/29 15:59:11 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 18:00:23 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,12 +36,12 @@ t_camera	pick_camera(t_scene *scene)
 	return (*(t_camera *)runner->content);
 }
 
-t_double3		get_direction(int x, int y, t_scene *scene, t_camera camera)
+t_double3	get_direction(int x, int y, t_scene *scene, t_camera camera)
 {
-	double fov_coeff;
-	double aspect_ratio;
-	double p_x;
-	double p_y;
+	double		fov_coeff;
+	double		aspect_ratio;
+	double		p_x;
+	double		p_y;
 	t_double3	res;
 
 	fov_coeff = tan((double)camera.fov / 2 * M_PI / 180);
@@ -53,16 +53,16 @@ t_double3		get_direction(int x, int y, t_scene *scene, t_camera camera)
 	return (res);
 }
 
-t_ray	gen_ray(int x, int y, t_scene *scene)
+t_ray		gen_ray(int x, int y, t_scene *scene)
 {
-	t_double3		origin;
-	t_double3		direction;
+	t_double3	origin;
+	t_double3	direction;
 	t_matrix	c2w;
 	t_camera	camera;
 	t_ray		ray;
 
 	camera = pick_camera(scene);
-	c2w = look_at(camera.pos, camera.dir);
+	c2w = look_at(camera);
 	origin = multiply_by_matrix(vec_create(0, 0, 0), c2w);
 	direction.x = 0.0;
 	direction = get_direction(x, y, scene, camera);
@@ -73,7 +73,7 @@ t_ray	gen_ray(int x, int y, t_scene *scene)
 	return (ray);
 }
 
-int	trace_ray(t_scene *scene, t_ray ray)
+int			trace_ray(t_scene *scene, t_ray ray)
 {
 	double		t_min;
 	t_object	*object;
@@ -89,8 +89,5 @@ int	trace_ray(t_scene *scene, t_ray ray)
 		return (to_int(color));
 	}
 	else
-	{
 		return (0);
-	}
-		//0xcc99ffe6
 }

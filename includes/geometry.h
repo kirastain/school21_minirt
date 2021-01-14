@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 22:28:48 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/29 22:29:13 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 15:00:56 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,10 @@ typedef struct	s_square
 	t_double3	center;
 	t_double3	normal;
 	double		side;
+	t_double3	a;
+	t_double3	b;
+	t_double3	c;
+	t_double3	d;
 }				t_square;
 
 typedef struct	s_cylinder

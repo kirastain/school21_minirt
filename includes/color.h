@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 17:08:27 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/29 22:26:18 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 11:15:41 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,6 @@ t_colrgb			int_to_color(int color);
 int					color_to_int(t_int3 color);
 int					to_int(t_colrgb a);
 
-int					create_trgb(int t, int r, int g, int b);
-int					get_t(int trgb);
-int					get_r(int trgb);
-int					get_g(int trgb);
-int					get_b(int trgb);
-int					get_opposite(int trgb);
-int					add_shade(double distance, int trgb);
 t_int3				get_int3_color(char *line);
 
 t_colrgb			colrgb_amb(t_colrgb col, float coeff);

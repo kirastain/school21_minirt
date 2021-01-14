@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 17:08:27 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/29 22:28:30 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 11:19:03 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ typedef struct	s_camera
 {
 	t_double3	pos;
 	t_double3	dir;
+	t_double3	dir_y;
+	t_double3	dir_x;
 	int			fov;
 }				t_camera;
 

@@ -1,19 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   equation_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/30 17:49:40 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/30 17:49:42 by bbelen           ###   ########.fr       */
+/*   Created: 2020/10/30 15:11:24 by bbelen            #+#    #+#             */
+/*   Updated: 2020/10/30 15:11:43 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_minirt.h"
 
-void	error_quit(char *str)
+void		swap_doubles(double *a, double *b)
 {
-	ft_putstr_fd(str, 1);
-	exit(-1);
+	double buffer;
+
+	buffer = *a;
+	*a = *b;
+	*b = buffer;
+}
+
+t_qparams	new_qparams(double a, double b, double c)
+{
+	t_qparams params;
+
+	params.a = a;
+	params.b = b;
+	params.c = c;
+	return (params);
 }

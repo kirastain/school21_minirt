@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/09/24 16:32:19 by bbelen@stud       #+#    #+#             */
-/*   Updated: 2020/10/29 14:36:34 by bbelen           ###   ########.fr       */
+/*   Created: 2020/10/30 18:07:21 by bbelen            #+#    #+#             */
+/*   Updated: 2020/10/30 18:07:40 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,34 @@ double		vec_len(t_double3 vec)
 	return (sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z));
 }
 
-t_double3	lin_comb(t_double3 a, double k1, t_double3 b, double k2)
+t_double3	vec_divide(t_double3 u, t_double3 v)
 {
-	t_double3 ret;
+	t_double3	res;
 
-	ret.x = k1 * a.x + k2 * b.x;
-	ret.y = k1 * a.y + k2 * b.y;
-	ret.z = k1 * a.z + k2 * b.z;
-	return (ret);
+	res.x = u.x / v.x;
+	res.y = u.y / v.y;
+	res.z = u.z / v.z;
+	return (res);
+}
+
+t_double3	vec_normalize(t_double3 vec)
+{
+	double		len;
+	t_double3	res;
+
+	len = sqrt(vec.x * vec.x + vec.y * vec.y + vec.z * vec.z);
+	res.x = vec.x / len;
+	res.y = vec.y / len;
+	res.z = vec.z / len;
+	return (res);
+}
+
+t_double3	vec_add(t_double3 u, t_double3 v)
+{
+	t_double3	res;
+
+	res.x = u.x + v.x;
+	res.y = u.y + v.y;
+	res.z = u.z + v.z;
+	return (res);
 }

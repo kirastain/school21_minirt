@@ -6,22 +6,11 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/20 15:23:51 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/29 17:11:14 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 18:22:52 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_minirt.h"
-#include <stdio.h>
-
-int	strarr_len(char **line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i])
-		i++;
-	return (i);
-}
 
 t_double3	get_double3(char *line)
 {
@@ -42,15 +31,16 @@ t_double3	get_double3_normal(char *line)
 	t_double3	norm;
 
 	norm = get_double3(line);
-	if ((norm.x >= -1.0f && norm.x <= 1.0f) || (norm.y >= -1.0f && norm.y <= 1.0f) ||
+	if ((norm.x >= -1.0f && norm.x <= 1.0f) ||
+		(norm.y >= -1.0f && norm.y <= 1.0f) ||
 	(norm.z >= -1.0f && norm.z >= 1.0f))
 		return (norm);
 	else
 		error_quit("Error\nWrong input view of norm vector\n");
-	return (norm);	
+	return (norm);
 }
 
-t_int3	get_int3_color(char *line)
+t_int3		get_int3_color(char *line)
 {
 	t_int3	color;
 
@@ -94,7 +84,7 @@ static int	parsing_line(char **line, t_vars *vars)
 	return (0);
 }
 
-int	checking_flags(int fd, t_vars *vars)
+int			checking_flags(int fd, t_vars *vars)
 {
 	char	*line;
 	char	**data;

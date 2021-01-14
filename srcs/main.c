@@ -6,26 +6,11 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 12:14:22 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/29 18:03:29 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 18:21:41 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_minirt.h"
-#include <stdio.h>
-
-void            my_mlx_pixel_put(t_data *data, int x, int y, int color)
-{
-    char    *dst;
-
-    dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-    *(unsigned int*)dst = color;
-}
-
-int		close_window(t_vars *vars)
-{
-	mlx_destroy_window(vars->mlx, vars->win);
-	exit(0);
-}
 
 static int	open_file(char *file, t_vars *vars)
 {
@@ -38,12 +23,12 @@ static int	open_file(char *file, t_vars *vars)
 	return (0);
 }
 
-int	raystart(t_vars *vars, int save)
+int			raystart(t_vars *vars, int save)
 {
-	int 	x;
-	int 	y;
+	int		x;
+	int		y;
 	t_pixel	**buff;
-	int	color;
+	int		color;
 
 	y = 0;
 	buff = create_buffer(vars->scene->height, vars->scene->width);
@@ -67,7 +52,7 @@ int	raystart(t_vars *vars, int save)
 	return (0);
 }
 
-int	drawing_image(t_vars *vars, int cam_num, int save)
+int			drawing_image(t_vars *vars, int cam_num, int save)
 {
 	int		cameras;
 
@@ -79,7 +64,7 @@ int	drawing_image(t_vars *vars, int cam_num, int save)
 	return (0);
 }
 
-void	do_rt(char *file, int save)
+void		do_rt(char *file, int save)
 {
 	t_vars	vars;
 
@@ -91,18 +76,20 @@ void	do_rt(char *file, int save)
 		drawing_image(&vars, 0, 1);
 		return ;
 	}
-	vars.win = mlx_new_window(vars.mlx, vars.scene->width, vars.scene->height, "minirt");
-	vars.img.img = mlx_new_image(vars.mlx, vars.scene->width, vars.scene->height);
-	vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
+	vars.win = mlx_new_window(vars.mlx, vars.scene->width,
+				vars.scene->height, "minirt");
+	vars.img.img = mlx_new_image(vars.mlx, vars.scene->width,
+				vars.scene->height);
+	vars.img.addr = mlx_get_data_addr(vars.img.img, &vars.img.bits_per_pixel,
+				&vars.img.line_length, &vars.img.endian);
 	mlx_hook(vars.win, 17, 0, close_window, &vars);
 	mlx_hook(vars.win, 4, 0, handle_mouse, &vars);
-	//mlx_hook(my_mlx->win_ptr, 2, 1L << 0, handle_key, my_mlx);
 	mlx_key_hook(vars.win, rerender, &vars);
 	drawing_image(&vars, 0, 0);
 	mlx_loop(vars.mlx);
 }
 
-int	main(int argc, char **argv)
+int			main(int argc, char **argv)
 {
 	t_vars	vars;
 
@@ -110,7 +97,7 @@ int	main(int argc, char **argv)
 		return (-1);
 	else
 	{
-		if  (argc == 2)
+		if (argc == 2)
 		{
 			do_rt(argv[1], 0);
 		}

@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 19:24:23 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/29 19:24:40 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 18:33:41 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	translate_plane(t_plane *pl, int key)
 	else if (key == S)
 		pl->center.y -= 2;
 	else if (key == A)
-		pl->center.x -= 2;
-	else if (key == D)
 		pl->center.x += 2;
+	else if (key == D)
+		pl->center.x -= 2;
 	else if (key == R)
 		pl->center.z -= 2;
 	else if (key == F)
@@ -35,9 +35,9 @@ void	translate_sphere(t_sphere *sp, int key)
 	else if (key == S)
 		sp->center.y -= 2;
 	else if (key == A)
-		sp->center.x -= 2;
-	else if (key == D)
 		sp->center.x += 2;
+	else if (key == D)
+		sp->center.x -= 2;
 	else if (key == R)
 		sp->center.z -= 2;
 	else if (key == F)
@@ -47,18 +47,24 @@ void	translate_sphere(t_sphere *sp, int key)
 void	translate_square(t_square *sq, int key)
 {
 	if (key == W)
+	{
 		sq->center.y += 2;
+		sq->a.y += 2;
+		sq->b.y += 2;
+		sq->c.y += 2;
+		sq->d.y += 2;
+	}
 	else if (key == S)
+	{
 		sq->center.y -= 2;
-	else if (key == A)
-		sq->center.x -= 2;
-	else if (key == D)
-		sq->center.x += 2;
-	else if (key == R)
-		sq->center.z -= 2;
-	else if (key == F)
-		sq->center.z += 2;
-}	
+		sq->a.y -= 2;
+		sq->b.y -= 2;
+		sq->c.y -= 2;
+		sq->d.y -= 2;
+	}
+	else
+		translate_square_2(sq, key);
+}
 
 void	translate_cylinder(t_cylinder *cy, int key)
 {
@@ -96,22 +102,6 @@ void	translate_triangle(t_triangle *tr, int key)
 		tr->b.x += 2;
 		tr->c.x += 2;
 	}
-	else if (key == D)
-	{
-		tr->a.x -= 2;
-		tr->b.x -= 2;
-		tr->c.x -= 2;
-	}
-	else if (key == R)
-	{
-		tr->a.z -= 2;
-		tr->b.z -= 2;
-		tr->c.z -= 2;
-	}
-	else if (key == F)
-	{
-		tr->a.z += 2;
-		tr->b.z += 2;
-		tr->c.z += 2;
-	}
+	else
+		translate_triangle_2(tr, key);
 }

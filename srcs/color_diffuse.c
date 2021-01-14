@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/15 19:13:28 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/29 22:46:33 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 15:05:43 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ t_colrgb	light_contribution(t_light light, t_surf surf, t_scene scene)
 	shadow_ray = create_ray(vec_add(surf.hit_point, mult_float(0.1,
 					surf.normal)), shadow_dir);
 	if (!intersect_main_shadow(scene.objects, shadow_ray, &closest_object2,
-					&t, surf.object)
+					&t)
 					|| t > vec_len(vec_sub(light.pos, surf.hit_point)))
 	{
 		coeff = fmax(0, dot(surf.normal, shadow_dir));

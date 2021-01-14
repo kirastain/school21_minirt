@@ -6,7 +6,7 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/08/13 12:17:26 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/29 22:24:22 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 18:40:41 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@
 # define T_TRIANGLE	5
 # define T_CAMERA	6
 # define T_LIGHT	7
-# define WIDTH 		1920
-# define HEIGHT		1080
+# define WIDTH 		1280
+# define HEIGHT		720
 # define W			13
 # define A			0
 # define S			1
@@ -59,7 +59,7 @@ int				key_close(int keycode, t_vars *vars);
 int				mouse_press(int button, int x, int y, void *param);
 int				close_app(void *param);
 int				rerender(int key, t_vars *vars);
-int				w_close(t_vars *vars);
+int				close_window(t_vars *vars);
 
 int				drawing_image(t_vars *vars, int cam_num, int save);
 
@@ -71,25 +71,27 @@ int				checking_flags(int fd, t_vars *vars);
 void			error_quit(char *str);
 
 int				init_scene(t_vars *vars);
-t_camera		*init_camera();
-t_light			*init_light();
-t_plane			*init_plane();
-t_sphere		*init_sphere();
-t_triangle		*init_triangle();
-t_square		*init_square();
-t_cylinder		*init_cylinder();
+t_camera		*init_camera(void);
+t_light			*init_light(void);
+t_plane			*init_plane(void);
+t_sphere		*init_sphere(void);
+t_triangle		*init_triangle(void);
+t_square		*init_square(void);
+t_cylinder		*init_cylinder(void);
 t_surf			init_surf(t_double3 hit_point, t_double3 normal,
 					t_object *object, t_ray ray);
 
 void			create_res(char **line, t_vars *vars);
 void			create_amb(char **line, t_vars *vars);
 void			create_camera(char **line, t_vars *vars);
+t_matrix		look_at(t_camera camera);
 void			create_light(char **line, t_vars *vars);
 
 t_object		*create_object(t_colrgb color, int type, void *geom);
 void			create_plane(char **line, t_vars *vars);
 void			create_sphere(char **line, t_vars *vars);
 void			create_square(char **line, t_vars *vars);
+void			get_sq_points(t_square *sq);
 void			create_cylinder(char **line, t_vars *vars);
 void			create_triangle(char **line, t_vars *vars);
 
@@ -108,7 +110,7 @@ int				intersects(t_object *obj, double *t, t_ray ray);
 int				intersect_main(t_list *objects, t_ray ray,
 					t_object **object, double *t_min);
 int				intersect_main_shadow(t_list *objects, t_ray ray,
-					t_object **object, double *t_min, t_object *work_object);
+					t_object **object, double *t_min);
 int				intersects_plane(t_object *obj, double *t, t_ray ray);
 int				intersects_sphere(t_object *obj, double *t, t_ray ray);
 int				intersects_square(t_ray ray, t_square *sq, double *t);
@@ -123,7 +125,7 @@ t_colrgb		mix_colors(t_light light, double coeff, t_surf surf);
 t_colrgb		light_contribution(t_light light, t_surf surf, t_scene scene);
 
 int				solve_quadratic(t_qparams params, double *x0, double *x1);
-int				cyl_get_roots(double *t0, double *t1, t_cylinder cylinder,
+int				cyl_get_roots(double *t0, double *t1, t_cylinder cy,
 					t_ray ray);
 void			check_t(double *t, t_cylinder cylinder, t_ray ray);
 
@@ -138,8 +140,11 @@ void			resize_object(t_object *object, int key);
 void			translate_plane(t_plane *pl, int key);
 void			translate_sphere(t_sphere *sp, int key);
 void			translate_square(t_square *sq, int key);
+void			translate_square_2(t_square *sq, int key);
+void			translate_square_3(t_square *sq, int key);
 void			translate_cylinder(t_cylinder *cy, int key);
 void			translate_triangle(t_triangle *tr, int key);
+void			translate_triangle_2(t_triangle *tr, int key);
 void			translate_camera(t_camera *cam, int key);
 void			translate_light(t_list *place, int key);
 
@@ -153,13 +158,17 @@ void			resize_triangle_add(t_double3 *p, t_double3 center, int key);
 
 void			rotate_plane(t_plane *pl, int key);
 void			rotate_square(t_square *sq, int key);
+void			work_with_abcd(t_rot_matrix m, t_square *sq, int key);
 void			rotate_cylinder(t_cylinder *cy, int key);
 void			rotate_camera(t_camera *cam, int key);
 void			rotate_triangle(t_triangle *tr, int key);
 
-t_rot_matrix	get_rot_m(int key);
+t_rot_matrix	get_rot_m(int key, double degree);
 t_rot_matrix	get_x_m(float degree);
 t_rot_matrix	get_y_m(float degree);
 t_rot_matrix	get_z_m(float degree);
+
+void			free_scene(t_vars *vars);
+void			free_t_scene(t_scene *scene);
 
 #endif

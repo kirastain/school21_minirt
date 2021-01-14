@@ -6,13 +6,13 @@
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/29 18:10:11 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/29 21:40:05 by bbelen           ###   ########.fr       */
+/*   Updated: 2020/10/30 18:18:49 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_minirt.h"
 
-void	select_light(t_vars	*vars)
+void	select_light(t_vars *vars)
 {
 	t_object	*object;
 	t_list		*place;
@@ -23,7 +23,6 @@ void	select_light(t_vars	*vars)
 		place = ((t_list*)(vars->chosen_object->obj))->next;
 	else
 	{
-		printf("no more lights\n");
 		return ;
 	}
 	object = create_object(((t_light*)(place->content))->color, T_LIGHT, place);
@@ -40,7 +39,6 @@ void	select_camera(t_vars *vars)
 	cam = place->content;
 	object = create_object(get_colrgb(0, 0, 0), T_CAMERA, cam);
 	vars->chosen_object = object;
-	printf("%d is selected\n", vars->chosen_object->type);
 }
 
 void	select_object(t_vars *vars, t_ray ray)
@@ -53,11 +51,10 @@ void	select_object(t_vars *vars, t_ray ray)
 	if (intersect_main(vars->scene->objects, ray, &object, &t_min))
 	{
 		vars->chosen_object = object;
-		printf("%d is selected\n", vars->chosen_object->type);
 	}
 	else
 	{
-		printf("nothing is selected\n");
+		ft_putstr_fd("nothing is selected\n", 1);
 	}
 }
 

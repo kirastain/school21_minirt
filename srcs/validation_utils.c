@@ -1,19 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   errors.c                                           :+:      :+:    :+:   */
+/*   validation_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bbelen <bbelen@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/10/30 17:49:40 by bbelen            #+#    #+#             */
-/*   Updated: 2020/10/30 17:49:42 by bbelen           ###   ########.fr       */
+/*   Created: 2020/10/30 15:29:58 by bbelen            #+#    #+#             */
+/*   Updated: 2020/10/30 15:31:45 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/ft_minirt.h"
 
-void	error_quit(char *str)
+int	strarr_len(char **line)
 {
-	ft_putstr_fd(str, 1);
-	exit(-1);
+	int	i;
+
+	i = 0;
+	while (line[i])
+		i++;
+	return (i);
 }
