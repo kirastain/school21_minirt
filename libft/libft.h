@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bbelen@student.21-school.ru <bbelen>       +#+  +:+       +#+        */
+/*   By: bbelen <bbelen@21-school.ru>               +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/05/02 21:35:11 by bbelen            #+#    #+#             */
-/*   Updated: 2020/09/21 12:57:59 by bbelen@stud      ###   ########.fr       */
+/*   Updated: 2020/07/28 20:05:30 by bbelen           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,12 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 32
-# endif
-
 typedef struct		s_list
 {
 	void			*content;
 	struct s_list	*next;
 }					t_list;
 
-double				ft_atod(char *str);
 int					ft_atoi(const char *nptr);
 void				ft_bzero(void *s, size_t n);
 void				*ft_calloc(size_t nmemb, size_t size);
@@ -45,7 +40,6 @@ t_list				*ft_lstlast(t_list *lst);
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void*),
 											void (*del)(void*));
 t_list				*ft_lstnew(void *content);
-t_list				*ft_lstat(t_list *lst, int pos);
 int					ft_lstsize(t_list *lst);
 void				*ft_memccpy(void *dest, void *src, int c, size_t n);
 void				*ft_memchr(const void *s, int c, size_t n);
@@ -72,6 +66,5 @@ char				*ft_strtrim(char const *s1, char const *set);
 char				*ft_substr(char const *s, unsigned int start, size_t len);
 int					ft_tolower(int c);
 int					ft_toupper(int c);
-int					get_next_line(int fd, char **line);
 
 #endif
